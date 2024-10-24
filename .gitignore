@@ -1,0 +1,22 @@
+
+# dotnet standards
+[Bb]in/
+[Oo]bj/
+/packages/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+
+# JetBrains
+.idea/
+riderModule.iml
+_ReSharper.Caches/
+
+#Auto-generated sln files
+/*.Generated.sln
