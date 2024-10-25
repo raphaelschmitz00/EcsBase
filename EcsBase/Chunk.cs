@@ -5,16 +5,17 @@ namespace EcsBase;
 
 
 public class Chunk<TKey>(
-	int size,
+	int maxSize,
 	Array[] componentArrays,
 	IReadOnlyDictionary<Type, int> typeIndices
 ) where TKey : notnull
 {
-	private readonly TKey[] _entities = new TKey[size];
+	private readonly TKey[] _entities = new TKey[maxSize];
 	private readonly Dictionary<TKey, int> _entityIndices = [];
 
 
-	public bool HasSpace => EntityCount < size;
+	public int MaxSize { get; } = maxSize;
+	public bool HasSpace => EntityCount < MaxSize;
 	public bool HasEntities => EntityCount > 0;
 
 	private int EntityCount { get; set; }
@@ -50,7 +51,7 @@ public class Chunk<TKey>(
 
 	public void AddEntity(TKey entity, IReadOnlyDictionary<Type, object> componentValues)
 	{
-		Debug.Assert(EntityCount < size);
+		Debug.Assert(EntityCount < MaxSize);
 
 		_entities[EntityCount] = entity;
 		_entityIndices[entity] = EntityCount;
