@@ -1,4 +1,4 @@
-namespace BaseEcs.Tests;
+namespace EcsBase.Tests;
 
 
 

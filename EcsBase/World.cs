@@ -23,7 +23,7 @@ public class World<TKey> where TKey : notnull
 				.Select(x => x.Value)
 				.ToList();
 
-		_cachedQueries.Add([..componentTypes], newList);
+		_cachedQueries.Add([.. componentTypes], newList);
 		return newList;
 	}
 
@@ -100,7 +100,7 @@ public class World<TKey> where TKey : notnull
 			x => x.HasOnlyComponents(componentTypes));
 		if (existingArchetype != null) return existingArchetype;
 
-		var newArchetype = new Archetype([..componentTypes]);
+		var newArchetype = new Archetype([.. componentTypes]);
 		var chunkList = new ChunkList<TKey>(newArchetype);
 		_chunkLists.Add(newArchetype, chunkList);
 		InvalidateCachedQueries(componentTypes);
