@@ -14,7 +14,7 @@ public class Chunk<TKey>(
 	private readonly Dictionary<TKey, int> _entityIndices = [];
 
 
-	public  int MaxSize { get; } = maxSize;
+	public int MaxSize { get; } = maxSize;
 	public bool HasSpace => EntityCount < MaxSize;
 	public bool HasEntities => EntityCount > 0;
 
