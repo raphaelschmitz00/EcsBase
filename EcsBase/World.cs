@@ -10,6 +10,10 @@ public class World<TKey> where TKey : notnull
 	private readonly Dictionary<HashSet<Type>, List<ChunkList<TKey>>> _cachedQueries = [];
 
 
+	public event Action<ComponentEventArgs>? ComponentAdded;
+	public event Action<ComponentEventArgs>? ComponentRemoving;
+
+
 	public List<ChunkList<TKey>> GetFittingChunkLists(Type[] componentTypes)
 	{
 		var existingQueryKey = _cachedQueries.Keys
@@ -32,6 +36,10 @@ public class World<TKey> where TKey : notnull
 	{
 		var entityLocation = AddEntity(key, components);
 		_entityLocations.Add(key, entityLocation);
+		foreach (var component in components)
+		{
+			ComponentAdded?.Invoke(new ComponentEventArgs(component.Key, component.Value));
+		}
 	}
 
 
@@ -45,6 +53,7 @@ public class World<TKey> where TKey : notnull
 
 		components.Add(typeof(TComponent), component);
 		_entityLocations[entity] = AddEntity(entity, components);
+		ComponentAdded?.Invoke(new ComponentEventArgs(typeof(TComponent), component));
 	}
 
 
@@ -53,6 +62,8 @@ public class World<TKey> where TKey : notnull
 		var entityLocation = _entityLocations[entity];
 		var oldChunk = entityLocation.Chunk;
 		var components = oldChunk.GetComponents(entity);
+		ComponentRemoving?.Invoke(new ComponentEventArgs(componentType, components[componentType]));
+
 		RemoveEntity(entity, entityLocation);
 
 		components.Remove(componentType);
@@ -63,6 +74,14 @@ public class World<TKey> where TKey : notnull
 	public void DestroyEntity(TKey entity)
 	{
 		var entityLocation = _entityLocations[entity];
+		var chunk = entityLocation.Chunk;
+		var components = chunk.GetComponents(entity);
+
+		foreach (var component in components)
+		{
+			ComponentRemoving?.Invoke(new ComponentEventArgs(component.Key, component.Value));
+		}
+
 		_entityLocations.Remove(entity);
 		RemoveEntity(entity, entityLocation);
 	}
@@ -120,6 +139,14 @@ public class World<TKey> where TKey : notnull
 		{
 			_cachedQueries.Remove(invalidQueriesKey);
 		}
+	}
+
+
+
+	public class ComponentEventArgs(Type type, object value) : EventArgs
+	{
+		public Type Type { get; } = type;
+		public object Value { get; } = value;
 	}
 
 
