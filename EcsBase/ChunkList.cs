@@ -20,7 +20,7 @@ public class ChunkList<TKey>(Archetype archetype) where TKey : notnull
 		var alreadyExistingChunkWithSpace = _chunks.FirstOrDefault(x => x.HasSpace);
 		if (alreadyExistingChunkWithSpace != null) return alreadyExistingChunkWithSpace;
 
-		ChunkSize = Math.Max(4096, ChunkSize * 2);
+		ChunkSize = Math.Min(4096, ChunkSize * 2);
 		var newChunk = Create();
 		_chunks.Add(newChunk);
 		return newChunk;
