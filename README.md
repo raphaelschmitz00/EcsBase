@@ -121,7 +121,7 @@ but yeah, there is no direct memory-wrangling involved.
 
 ### 🤏 Minimalism
 The entire code is in 9 files, all but one smaller than 200 lines of code.  
-The library is only 20Kb in size (not that this would be unexpected for, well,  9 files).
+The library is only 35Kb in size (not that this would be unexpected for, well,  9 files).
 
 It can arguably not even be called an "Entity/Component/System" library,  
 because there is no system (`IQuery` hardly qualifies).  
